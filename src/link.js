@@ -2,9 +2,9 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Link as GatsbyLink, navigate as gatsbyNavigate } from "gatsby"
 import { IntlContextConsumer } from "./intl-context"
-import { isMatch } from "./util"
+const { isMatch, removeLocalePart } = require("./util")
 
-const Link = ({ to, language, children, onClick, ...rest }) => (
+const Link = ({ to, language, forceLang, children, onClick, ...rest }) => (
   <IntlContextConsumer>
     {intl => {
       const languageLink = language || intl.language
@@ -12,8 +12,8 @@ const Link = ({ to, language, children, onClick, ...rest }) => (
       const isMatchedIgnoredPaths = isMatch(intl.ignoredPaths, to)
 
       const link =
-        (intl.routed || language) && !isMatchedIgnoredPaths
-          ? `/${languageLink}${to}`
+        (intl.routed || language) && (!isMatchedIgnoredPaths || forceLang)
+          ? `/${languageLink}${removeLocalePart(to)}`
           : `${to}`
 
       const handleClick = e => {
@@ -38,10 +38,12 @@ Link.propTypes = {
   children: PropTypes.node.isRequired,
   to: PropTypes.string,
   language: PropTypes.string,
+  forceLang: PropTypes.bool,
 }
 
 Link.defaultProps = {
   to: "",
+  forceLang: false,
 }
 
 export default Link

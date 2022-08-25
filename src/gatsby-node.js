@@ -100,7 +100,14 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
     }
   }
 
-  const newPage = generatePage(false, defaultLanguage)
+  let newPage;
+  if (isMatch(ignoredPaths, page.path)) {
+    newPage = generatePage(false, page.context?.language ?? defaultLanguage);
+    newPage.context.intl.routed = true;
+  } else {
+    newPage = generatePage(false, defaultLanguage);
+  }
+
   deletePage(page)
   createPage(newPage)
 
