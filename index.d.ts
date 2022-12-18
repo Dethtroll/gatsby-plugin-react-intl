@@ -1,10 +1,10 @@
-declare module 'gatsby-plugin-react-intl' {
+declare module '@dethtroll/gatsby-plugin-react-intl' {
   import * as gatsby from 'gatsby';
   import React from 'react';
 
   export * from 'react-intl';
 
-  export class Link<TState> extends React.Component<gatsby.GatsbyLinkProps<TState> & { language: string, forceLang?: boolean }> {}
+  export class Link<TState> extends React.Component<gatsby.GatsbyLinkProps<TState> & { language?: string, forceLang?: boolean }> {}
   export const navigate: typeof gatsby.navigate;
   export const changeLocale: (language: string, to?: string) => void;
 
