@@ -11,10 +11,12 @@ const Link = ({ to, language, forceLang, children, onClick, ...rest }) => (
 
       const isMatchedIgnoredPaths = isMatch(intl.ignoredPaths, to)
 
-      const link =
-        (intl.routed || language) && (!isMatchedIgnoredPaths || forceLang)
+      let link = to;
+      if (to.startsWith('/')) {
+        link = (intl.routed || language) && (!isMatchedIgnoredPaths || forceLang)
           ? `/${languageLink}${removeLocalePart(to)}`
-          : `${to}`
+          : `${to}`;
+      }
 
       const handleClick = e => {
         if (language) {
